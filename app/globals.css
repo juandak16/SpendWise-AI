@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   SPENDWISE AI - GLOBAL STYLES
+   Dashboard moderno y elegante
+   ============================================ */
+
+:root {
+  --foreground: 15 23 42;
+  --background: 248 250 252;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground: 248 250 252;
+    --background: 15 23 42;
+  }
+}
+
+/* Base body styles */
+body {
+  color: rgb(var(--foreground));
+  background-color: rgb(var(--background));
+  font-feature-settings: "cv11", "ss01", "ss03";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Better focus styles */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-emerald-500 ring-offset-2 ring-offset-white dark:ring-offset-slate-900;
+  }
+
+  /* Selection color */
+  ::selection {
+    @apply bg-emerald-500/20 text-emerald-900 dark:text-emerald-100;
+  }
+}
+
+@layer components {
+  /* Premium glass card */
+  .glass-card {
+    @apply bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl;
+    @apply border border-white/20 dark:border-slate-700/50;
+    @apply shadow-xl shadow-slate-900/5 dark:shadow-slate-900/30;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent;
+  }
+
+  /* Subtle hover lift */
+  .hover-lift {
+    @apply transition-transform duration-200 hover:-translate-y-0.5;
+  }
+
+  /* Shimmer effect for loading */
+  .shimmer {
+    @apply relative overflow-hidden;
+  }
+  
+  .shimmer::after {
+    content: '';
+    @apply absolute inset-0;
+    @apply bg-gradient-to-r from-transparent via-white/20 to-transparent;
+    animation: shimmer 2s infinite;
+  }
+
+  /* Cards de gastos - estilo premium */
+  .card-expense {
+    @apply rounded-2xl bg-white dark:bg-slate-800/50;
+    @apply border border-slate-100 dark:border-slate-700/50;
+    @apply shadow-sm hover:shadow-md;
+    @apply transition-all duration-200;
+  }
+
+  /* Input premium */
+  .input-premium {
+    @apply w-full rounded-2xl;
+    @apply bg-white dark:bg-slate-800;
+    @apply border border-slate-200 dark:border-slate-700;
+    @apply px-5 py-4 text-base font-medium;
+    @apply text-slate-900 dark:text-slate-100;
+    @apply placeholder:text-slate-400 dark:placeholder:text-slate-500;
+    @apply focus:outline-none focus:ring-4 focus:ring-emerald-500/20;
+    @apply focus:border-emerald-500 dark:focus:border-emerald-400;
+    @apply transition-all duration-200;
+  }
+
+  /* Button variants */
+  .btn-gradient {
+    @apply inline-flex items-center justify-center;
+    @apply px-6 py-3 rounded-xl font-medium;
+    @apply bg-gradient-to-r from-emerald-500 to-teal-500;
+    @apply text-white shadow-lg shadow-emerald-500/25;
+    @apply hover:from-emerald-600 hover:to-teal-600;
+    @apply hover:shadow-emerald-500/40;
+    @apply active:scale-[0.98];
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply transition-all duration-200;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center;
+    @apply px-4 py-2 rounded-xl font-medium;
+    @apply text-slate-600 dark:text-slate-400;
+    @apply hover:bg-slate-100 dark:hover:bg-slate-800;
+    @apply active:scale-[0.98];
+    @apply transition-all duration-200;
+  }
+
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center gap-1.5;
+    @apply px-3 py-1 rounded-full;
+    @apply text-xs font-medium;
+  }
+
+  .badge-success {
+    @apply bg-emerald-50 dark:bg-emerald-500/10;
+    @apply text-emerald-600 dark:text-emerald-400;
+    @apply border border-emerald-100 dark:border-emerald-500/20;
+  }
+
+  .badge-warning {
+    @apply bg-amber-50 dark:bg-amber-500/10;
+    @apply text-amber-600 dark:text-amber-400;
+    @apply border border-amber-100 dark:border-amber-500/20;
+  }
+
+  .badge-danger {
+    @apply bg-rose-50 dark:bg-rose-500/10;
+    @apply text-rose-600 dark:text-rose-400;
+    @apply border border-rose-100 dark:border-rose-500/20;
+  }
+}
+
+@layer utilities {
+  /* Text balance */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Hide scrollbar but allow scrolling */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Animations */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
