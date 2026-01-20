@@ -1,0 +1,130 @@
+# ============================================
+# BMAD Framework v6 - SpendWise AI Configuration
+# ============================================
+# Project Type: Brownfield (Existing Codebase)
+# Last Updated: 2026-01-20
+# Language Audit: Complete (EN Technical / ES UI)
+# ============================================
+
+# Project Metadata
+project:
+  name: SpendWise AI
+  type: brownfield
+  description: Smart monthly expense manager with natural language processing
+  version: 0.1.0
+  
+# Technology Stack
+techStack:
+  framework: Next.js 14+ (App Router)
+  language: TypeScript 5.4+
+  styling: Tailwind CSS 3.4 + Shadcn/UI
+  stateManagement: Zustand 4.5+
+  storage: localStorage (MVP)
+  notifications: Sonner 1.4+
+  icons: Lucide React
+
+# Domain Configuration
+domain:
+  currencies:
+    - code: COP
+      name: Colombian Peso
+      decimals: 0
+    - code: USD
+      name: US Dollar
+      decimals: 2
+  defaultCurrency: USD
+  exchangeRate:
+    from: COP
+    to: USD
+    rate: 3700
+
+# Language Policy
+languagePolicy:
+  documentation: en    # Technical docs in English
+  code: en             # All code (vars, functions, comments) in English
+  uiStrings: es        # User-facing text (labels, messages) in Spanish
+
+# Markdown Exploder (for large documents)
+markdownExploder: true
+
+# QA Configuration
+qa:
+  location: docs/qa
+
+# PRD Configuration
+prd:
+  file: docs/prd.md
+  version: v4
+  sharded: false
+  shardedLocation: docs/prd
+  epicFilePattern: epic-{n}*.md
+
+# Architecture Configuration
+architecture:
+  file: docs/architecture.md
+  version: v4
+  sharded: false
+  shardedLocation: docs/architecture
+  componentPattern: Atomic Design
+  componentLevels:
+    - atoms
+    - molecules
+    - organisms
+    - templates
+    - providers
+
+# Custom Technical Documents
+customTechnicalDocuments:
+  - .bmad-core/agents/analyst.md      # Penny - Financial Requirements
+  - .bmad-core/agents/architect.md    # Archi - Technical Architecture
+  - .bmad-core/agents/dev.md          # Cody - Coding Standards
+
+# Developer Agent - Files to Always Load
+devLoadAlwaysFiles:
+  - .bmad-core/agents/architect.md    # Folder structure, types, patterns
+  - .bmad-core/agents/analyst.md      # Business logic, categories, currencies
+
+# Debug Log Location
+devDebugLog: .ai/debug-log.md
+
+# Story Location
+devStoryLocation: docs/stories
+
+# Slash Command Prefix
+slashPrefix: BMad
+
+# Agent Configuration
+agents:
+  analyst:
+    name: Penny
+    role: Financial Product Analyst
+    file: .bmad-core/agents/analyst.md
+    
+  architect:
+    name: Archi
+    role: System Architect
+    file: .bmad-core/agents/architect.md
+    
+  developer:
+    name: Cody
+    role: Senior Fullstack Developer
+    file: .bmad-core/agents/dev.md
+
+# Migration History
+migration:
+  source: /.bmad/
+  destination: /.bmad-core/agents/
+  date: 2026-01-20
+  status: complete
+  languageAudit: complete
+  auditDate: 2026-01-20
+
+# Project-Specific Paths
+paths:
+  components: src/components
+  services: src/services
+  stores: src/stores
+  types: src/types
+  config: src/config
+  lib: src/lib
+  app: app
