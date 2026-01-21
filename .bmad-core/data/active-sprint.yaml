@@ -1,0 +1,374 @@
+# SpendWise AI - Active Sprint
+# Maintained by: BMAD Orchestrator
+# Last Updated: 2026-01-21
+
+sprint:
+  id: SPRINT-003
+  name: "Storybook Integration"
+  status: completed
+  startDate: 2026-01-21
+  endDate: 2026-01-21
+  goal: "Implement Storybook documentation for Atomic Design components"
+
+# Related PRD
+prd:
+  id: PRD-STORYBOOK-001
+  file: .bmad-core/data/prd-storybook.md
+  status: approved
+
+# User Stories in Sprint
+stories:
+  - id: US-STORY-001
+    title: "Storybook Setup & Configuration"
+    status: done
+    points: 3
+    assignee: Cody (Dev)
+    tasks:
+      - description: "Install Storybook 8.x dependencies"
+        status: done
+      - description: "Configure .storybook/main.ts"
+        status: done
+      - description: "Configure .storybook/preview.ts with Tailwind"
+        status: done
+      - description: "Add storybook scripts to package.json"
+        status: done
+
+  - id: US-STORY-002
+    title: "Atom Stories - Button"
+    status: done
+    points: 2
+    assignee: Cody (Dev)
+    file: src/components/atoms/button.stories.tsx
+    variants:
+      - Primary
+      - Secondary
+      - Ghost
+      - Danger
+      - Small
+      - Large
+      - Loading
+      - Disabled
+      - AllVariants
+      - AllSizes
+
+  - id: US-STORY-003
+    title: "Atom Stories - Input"
+    status: done
+    points: 1
+    assignee: Cody (Dev)
+    file: src/components/atoms/input.stories.tsx
+    variants:
+      - Default
+      - Natural
+      - WithValue
+      - Disabled
+      - ExpenseExamples
+
+  - id: US-STORY-004
+    title: "Atom Stories - Badge"
+    status: done
+    points: 1
+    assignee: Cody (Dev)
+    file: src/components/atoms/badge.stories.tsx
+    variants:
+      - Default
+      - Success
+      - Warning
+      - Danger
+      - Info
+      - Small
+      - CategoryExamples
+      - AllVariants
+
+  - id: US-STORY-005
+    title: "Atom Stories - Spinner"
+    status: done
+    points: 1
+    assignee: Cody (Dev)
+    file: src/components/atoms/spinner.stories.tsx
+    variants:
+      - Default
+      - Small
+      - Large
+      - AllSizes
+      - LoadingContext
+
+  - id: US-STORY-006
+    title: "Atom Stories - Card"
+    status: done
+    points: 2
+    assignee: Cody (Dev)
+    file: src/components/atoms/card.stories.tsx
+    variants:
+      - Default
+      - WithHeader
+      - WithFooter
+      - ExpenseSummary
+      - CategoryCard
+
+  - id: US-STORY-007
+    title: "Molecule Stories - ExpenseInput"
+    status: done
+    points: 2
+    assignee: Cody (Dev)
+    file: src/components/molecules/expense-input.stories.tsx
+    completedAt: 2026-01-21
+    acceptance:
+      - Shows natural language input example ✅
+      - Demonstrates loading state ✅
+      - Shows quick examples buttons ✅
+    variants:
+      - Default
+      - WithValue
+      - Loading
+      - USDPlaceholder
+      - COPPlaceholder
+      - QuickExamplesDemo
+      - AllStates
+      - ValidInputExamples
+
+  - id: US-STORY-008
+    title: "Molecule Stories - ExpenseCard"
+    status: done
+    points: 2
+    assignee: Cody (Dev)
+    file: src/components/molecules/expense-card.stories.tsx
+    completedAt: 2026-01-21
+    acceptance:
+      - Shows expense with all categories ✅
+      - Demonstrates currency conversion display ✅
+      - Shows low confidence alert state ✅
+    variants:
+      - Alimentacion
+      - Transporte
+      - Hogar
+      - Entretenimiento
+      - Salud
+      - Educacion
+      - CuidadoPersonal
+      - Familia
+      - Otros
+      - MontoEnCOP
+      - MontoEnUSD
+      - BajaConfianza
+      - AltaConfianza
+      - GastoHoy
+      - GastoAyer
+      - GastoAntiguo
+      - TodasLasCategorias
+
+  - id: US-STORY-009
+    title: "Molecule Stories - StatCard"
+    status: done
+    points: 1
+    assignee: Cody (Dev)
+    file: src/components/molecules/stat-card.stories.tsx
+    completedAt: 2026-01-21
+    acceptance:
+      - Shows all stat variations ✅
+      - Demonstrates trend indicators ✅
+    variants:
+      - Default
+      - ConSubtitulo
+      - ConTendenciaAlza
+      - ConTendenciaBaja
+      - SinTendencia
+      - IconoVerde
+      - IconoAzul
+      - IconoVioleta
+      - IconoAmbar
+      - GridDeEstadisticas
+      - ValorMoneda
+      - ValorNumerico
+      - ValorConEmoji
+      - SinIcono
+
+  - id: US-STORY-010
+    title: "Molecule Stories - CategoryBadge"
+    status: done
+    points: 1
+    assignee: Cody (Dev)
+    file: src/components/molecules/category-badge.stories.tsx
+    completedAt: 2026-01-21
+    acceptance:
+      - Shows all category colors ✅
+      - Demonstrates emoji display ✅
+    variants:
+      - Alimentacion
+      - Transporte
+      - Hogar
+      - Entretenimiento
+      - Ropa
+      - Salud
+      - Educacion
+      - Servicios
+      - CuidadoPersonal
+      - Familia
+      - Otros
+      - TamanoSmall
+      - TamanoMedium
+      - SoloEmoji
+      - ConNombre
+      - SinCategoria
+      - CategoriaInvalida
+      - TodasLasCategorias
+      - SoloEmojisTodas
+      - CompactasSmall
+      - EnListaDeGastos
+
+  - id: US-STORY-011
+    title: "Molecule Stories - CurrencyDisplay"
+    status: done
+    points: 1
+    assignee: Cody (Dev)
+    file: src/components/molecules/currency-display.stories.tsx
+    completedAt: 2026-01-21
+    acceptance:
+      - Shows COP formatting ✅
+      - Shows USD formatting ✅
+      - Shows conversion display ✅
+    variants:
+      - PesoColombiano
+      - COPPequeño
+      - COPGrande
+      - COPMuyGrande
+      - DolarAmericano
+      - USDPequeño
+      - USDGrande
+      - USDMuyGrande
+      - TamanoSmall
+      - TamanoMedium
+      - TamanoLarge
+      - TamanoXLarge
+      - ConSignoPositivo
+      - ValorNegativo
+      - ValorCero
+      - ComparacionMonedas
+      - ComparacionTamanos
+      - EnTarjetaDeGasto
+      - EnResumenMensual
+      - ListaDePreciosUSD
+      - ListaDePreciosCOP
+
+  - id: US-STORY-012
+    title: "Organism Stories - ExpenseList"
+    status: done
+    points: 3
+    assignee: Cody (Dev)
+    file: src/components/organisms/expense-list.stories.tsx
+    completedAt: 2026-01-21
+    acceptance:
+      - Shows empty state ✅
+      - Shows list with multiple expenses ✅
+      - Demonstrates expand/collapse ✅
+    variants:
+      - ConDatos
+      - ListaVacia
+      - Cargando
+      - PocosGastos
+      - MuchosGastos
+      - UnSoloGasto
+      - LimiteTres
+      - LimiteDiez
+      - VariasCategorias
+      - TodasAlimentacion
+      - ConBajaConfianza
+      - MixMonedas
+      - DemoInteractiva
+
+  - id: US-STORY-013
+    title: "Organism Stories - Header"
+    status: done
+    points: 1
+    assignee: Cody (Dev)
+    file: src/components/organisms/header.stories.tsx
+    completedAt: 2026-01-21
+    acceptance:
+      - Shows branding ✅
+      - Shows current date ✅
+      - Shows AI status ✅
+    variants:
+      - Default
+      - SinEstadoIA
+      - FechaPersonalizada
+      - IAProcesando
+      - IADesconectada
+      - ConAccionesExtras
+      - Compacto
+      - FechaCorta
+      - ComparacionTemas
+
+  - id: US-STORY-014
+    title: "Organism Stories - MonthlySummary"
+    status: done
+    points: 2
+    assignee: Cody (Dev)
+    file: src/components/organisms/monthly-summary.stories.tsx
+    completedAt: 2026-01-21
+    acceptance:
+      - Shows all 4 stat cards ✅
+      - Demonstrates empty state ✅
+      - Shows exchange rate label ✅
+    variants:
+      - ConDatos
+      - SinDatos
+      - TendenciaAlAlza
+      - TendenciaALaBaja
+      - SinTendencia
+      - TopTransporte
+      - TopEntretenimiento
+      - TopHogar
+      - GastoBajo
+      - GastoAlto
+      - SinTipoDeCambio
+      - TipoDeCambioPersonalizado
+      - VistaMovil
+      - VistaCompleta
+
+  - id: US-STORY-015
+    title: "Template Stories - DashboardLayout"
+    status: done
+    points: 2
+    assignee: Cody (Dev)
+    file: src/components/templates/dashboard-layout.stories.tsx
+    completedAt: 2026-01-21
+    acceptance:
+      - Shows full page layout ✅
+      - Demonstrates with sample content ✅
+    variants:
+      - Default
+      - SoloHeader
+      - SinHeader
+      - ConResumenMensual
+      - ConInputDeGastos
+      - ConListaDeGastos
+      - ConSidebar
+      - TemaClaro
+      - TemaOscuro
+      - VistaMovil
+      - EstadoVacio
+
+# Sprint Metrics
+metrics:
+  totalPoints: 25
+  completedPoints: 25
+  velocity: 100%
+  
+  storiesByStatus:
+    done: 15
+    pending: 0
+    total: 15
+
+# Dependencies
+blockers: []
+
+# Notes
+notes:
+  - "🎉 SPRINT COMPLETED!"
+  - "All 15 stories implemented successfully"
+  - "Atoms: Button, Input, Badge, Spinner, Card"
+  - "Molecules: ExpenseInput, ExpenseCard, StatCard, CategoryBadge, CurrencyDisplay"
+  - "Organisms: ExpenseList, Header, MonthlySummary"
+  - "Templates: DashboardLayout"
+  - "Total variants created: 100+"
+  - "All UI text in Spanish as per project rules"

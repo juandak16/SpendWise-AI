@@ -48,32 +48,55 @@ src/components/
 ├── atoms/                      # ⚛️ ATOMS - Indivisible UI elements
 │   ├── index.ts                # Barrel export
 │   ├── badge.tsx               # Badge/label component
+│   ├── badge.stories.tsx       # 📖 Storybook stories
 │   ├── button.tsx              # Button component (variants)
+│   ├── button.stories.tsx      # 📖 Storybook stories
 │   ├── card.tsx                # Card container component
+│   ├── card.stories.tsx        # 📖 Storybook stories
 │   ├── input.tsx               # Input field component
-│   └── spinner.tsx             # Loading spinner
+│   ├── input.stories.tsx       # 📖 Storybook stories
+│   ├── spinner.tsx             # Loading spinner
+│   └── spinner.stories.tsx     # 📖 Storybook stories
 │
 ├── molecules/                  # 🔬 MOLECULES - Atom combinations
 │   ├── index.ts                # Barrel export
 │   ├── category-badge.tsx      # Badge with category emoji/color
+│   ├── category-badge.stories.tsx
 │   ├── currency-display.tsx    # Formatted currency amount
+│   ├── currency-display.stories.tsx
 │   ├── expense-card.tsx        # Card displaying single expense
+│   ├── expense-card.stories.tsx
 │   ├── expense-input.tsx       # NL input + add button
-│   └── stat-card.tsx           # Statistic card with icon
+│   ├── expense-input.stories.tsx
+│   ├── stat-card.tsx           # Statistic card with icon
+│   └── stat-card.stories.tsx
 │
 ├── organisms/                  # 🦠 ORGANISMS - Complete UI sections
 │   ├── index.ts                # Barrel export
 │   ├── expense-list.tsx        # List of ExpenseCard components
+│   ├── expense-list.stories.tsx
 │   ├── header.tsx              # App header with branding
-│   └── monthly-summary.tsx     # Monthly stats dashboard
+│   ├── header.stories.tsx
+│   ├── monthly-summary.tsx     # Monthly stats dashboard
+│   └── monthly-summary.stories.tsx
 │
 ├── templates/                  # 📄 TEMPLATES - Page layouts
 │   ├── index.ts                # Barrel export
-│   └── dashboard-layout.tsx    # Main dashboard layout
+│   ├── dashboard-layout.tsx    # Main dashboard layout
+│   └── dashboard-layout.stories.tsx
 │
 └── providers/                  # 🔌 PROVIDERS - Context providers
     ├── index.ts                # Barrel export
     └── toaster-provider.tsx    # Toast notification provider
+```
+
+### Storybook Configuration
+
+```
+.storybook/                     # 📖 Storybook configuration
+├── main.ts                     # Storybook main config
+├── preview.tsx                 # Global decorators & themes (JSX)
+└── manager.ts                  # Storybook UI theme (dark mode)
 ```
 
 **Import Hierarchy (STRICT):**
@@ -172,13 +195,23 @@ src/lib/
 | Element | Convention | Example |
 |---------|------------|---------|
 | Folders | kebab-case | `expense-list/` |
-| Components | PascalCase | `ExpenseCard.tsx` |
+| Components | kebab-case | `expense-card.tsx` |
+| Story files | kebab-case + suffix | `expense-card.stories.tsx` |
 | Files (non-component) | kebab-case | `expense-parser.service.ts` |
 | Barrel exports | lowercase | `index.ts` |
 | Types files | kebab-case + suffix | `expense.types.ts` |
 | Service files | kebab-case + suffix | `calculator.service.ts` |
 | Store files | kebab-case + suffix | `expense.store.ts` |
 | Config files | kebab-case + suffix | `categories.config.ts` |
+
+### Storybook Conventions
+
+| Element | Convention | Example |
+|---------|------------|---------|
+| Story file | `{component}.stories.tsx` | `button.stories.tsx` |
+| Story title | `Atomic Level/ComponentName` | `'Atoms/Button'` |
+| Story name | PascalCase (variant) | `Primary`, `Secondary`, `Loading` |
+| Args | camelCase | `isLoading`, `variant` |
 
 ---
 
@@ -222,6 +255,12 @@ Before creating a new file or directory, verify:
    - Follow `{domain}.types.ts` naming
    - Update barrel export
 
+6. **New Story (Storybook):**
+   - Create in same directory as component
+   - Follow `{component}.stories.tsx` naming
+   - Include: Default, Variants, States stories
+   - Use Spanish text for UI labels (UI_LANGUAGE_RULE)
+
 ---
 
-*Document maintained by Archi. Last updated: 2026-01-20*
+*Document maintained by Archi. Last updated: 2026-01-21*
