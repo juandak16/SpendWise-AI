@@ -1,6 +1,7 @@
 /**
- * 🔬 MOLÉCULA: CurrencyDisplay
- * Muestra un monto formateado con símbolo de moneda
+ * 🔬 MOLECULE: CurrencyDisplay
+ * Displays a formatted amount with currency symbol
+ * @see architect.md - Atomic Design (Molecules)
  */
 
 import { type FC } from 'react';

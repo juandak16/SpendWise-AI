@@ -2,26 +2,26 @@ import type { CurrencyCode } from './currency.types';
 import type { Category } from './category.types';
 
 /**
- * Gasto registrado en el sistema
+ * Expense registered in the system
  * @see analyst.md - Interface Expense
  */
 export interface Expense {
   readonly id: string;
-  readonly amount: number;           // Almacenado en unidad mínima (pesos COP, centavos USD)
+  readonly amount: number;           // Stored in minimum unit (COP pesos, USD cents)
   readonly currency: CurrencyCode;
   readonly categoryId: number;
   readonly description: string;
-  readonly originalInput: string;    // Texto original del usuario
+  readonly originalInput: string;    // Original user input text
   readonly date: Date;
   readonly createdAt: Date;
   readonly updatedAt: Date;
-  readonly confidence: number;       // 0-1, certeza de categorización
-  readonly isManualCategory: boolean; // true si el usuario reasignó la categoría
+  readonly confidence: number;       // 0-1, categorization certainty
+  readonly isManualCategory: boolean; // true if user reassigned the category
 }
 
 /**
- * Resultado del parsing de lenguaje natural
- * @see analyst.md - Comando *structure-expense
+ * Result of natural language parsing
+ * @see analyst.md - Command *structure-expense
  */
 export interface ParsedExpense {
   amount: number;
@@ -37,14 +37,14 @@ export interface ParsedExpense {
 }
 
 /**
- * Input para crear un nuevo gasto
+ * Input for creating a new expense
  */
 export interface CreateExpenseInput {
   naturalLanguageInput: string;
 }
 
 /**
- * Input para actualizar un gasto existente
+ * Input for updating an existing expense
  */
 export interface UpdateExpenseInput {
   id: string;
@@ -56,7 +56,7 @@ export interface UpdateExpenseInput {
 }
 
 /**
- * Filtros para consultar gastos
+ * Filters for querying expenses
  */
 export interface ExpenseFilters {
   startDate?: Date;
@@ -69,7 +69,7 @@ export interface ExpenseFilters {
 }
 
 /**
- * Gasto con su categoría expandida (para UI)
+ * Expense with expanded category (for UI)
  */
 export interface ExpenseWithCategory extends Expense {
   category: Category;

@@ -1,23 +1,26 @@
-// Currency
-export type { CurrencyCode, CurrencyConfig, CurrencyMap } from './currency.types';
+/**
+ * Type Definitions - TypeScript interfaces and types
+ * @see architect.md - Type definitions
+ */
 
-// Category
-export type { Category, CreateCategoryInput } from './category.types';
+export type {
+  CurrencyCode,
+  CurrencyConfig,
+  CurrencyMap,
+} from './currency.types';
+
+export type {
+  Category,
+  CreateCategoryInput,
+  CategorizationResult,
+} from './category.types';
 export { DefaultCategoryId } from './category.types';
 
-// Expense
-export type {
-  Expense,
-  ParsedExpense,
-  CreateExpenseInput,
-  UpdateExpenseInput,
-  ExpenseFilters,
-  ExpenseWithCategory,
-} from './expense.types';
+export type { Expense, ParsedExpense } from './expense.types';
 
-// Stats
 export type {
   MonthlySummary,
   CategoryTotal,
   DailyStats,
+  CategoryBreakdown,
 } from './stats.types';

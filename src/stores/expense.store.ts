@@ -1,7 +1,7 @@
 /**
- * Store de gastos con Zustand
+ * Expense Store - Zustand state management
  * @see architect.md - Stores
- * @see coder.md - Patrón de Errores en Stores (3.3)
+ * @see dev.md - Error handling pattern for stores (3.3)
  */
 
 import { create } from 'zustand';
@@ -18,44 +18,44 @@ import {
 } from '@/services';
 
 /**
- * Estado del store de gastos
+ * Expense store state interface
  */
 interface ExpenseState {
-  // Estado
+  // State
   expenses: Expense[];
   isLoading: boolean;
   error: string | null;
 
-  // Acciones
+  // Actions
   loadExpenses: () => void;
   addExpenseFromInput: (input: string) => boolean;
   updateExpense: (id: string, updates: Partial<Expense>) => boolean;
   deleteExpense: (id: string) => boolean;
   clearError: () => void;
 
-  // Selectores (ahora sin parámetro de currency - todo en USD)
+  // Selectors (no currency param - everything in USD)
   getMonthlySummary: (month: number, year: number) => MonthlySummary;
   getExpensesByCategory: (categoryId: number) => Expense[];
   getExpensesByDateRange: (startDate: Date, endDate: Date) => Expense[];
 }
 
 /**
- * Genera un ID único para gastos
+ * Generates a unique ID for expenses
  */
 const generateExpenseId = (): string => {
   return `exp_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 };
 
 /**
- * Store de gastos
+ * Expense store
  */
 export const useExpenseStore = create<ExpenseState>((set, get) => ({
-  // ==================== ESTADO INICIAL ====================
+  // ==================== INITIAL STATE ====================
   expenses: [],
   isLoading: false,
   error: null,
 
-  // ==================== ACCIONES ====================
+  // ==================== ACTIONS ====================
 
   loadExpenses: () => {
     try {
@@ -178,10 +178,10 @@ export const useExpenseStore = create<ExpenseState>((set, get) => ({
     set({ error: null });
   },
 
-  // ==================== SELECTORES ====================
+  // ==================== SELECTORS ====================
 
   /**
-   * Obtiene el resumen mensual (todo convertido a USD)
+   * Gets monthly summary (all converted to USD)
    */
   getMonthlySummary: (month: number, year: number): MonthlySummary => {
     const { expenses } = get();
@@ -203,7 +203,7 @@ export const useExpenseStore = create<ExpenseState>((set, get) => ({
 }));
 
 /**
- * Selectores standalone
+ * Standalone selectors
  */
 export const expenseSelectors = {
   getExpenses: () => useExpenseStore.getState().expenses,

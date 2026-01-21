@@ -1,8 +1,9 @@
 'use client';
 
 /**
- * 🔬 MOLÉCULA: ExpenseCard
- * Tarjeta de gasto con conversión a USD
+ * 🔬 MOLECULE: ExpenseCard
+ * Expense card with USD conversion display
+ * @see architect.md - Atomic Design (Molecules)
  */
 
 import { type FC, useState } from 'react';
@@ -17,6 +18,10 @@ export interface ExpenseCardProps {
   className?: string;
 }
 
+/**
+ * Formats a date to a human-readable string
+ * Returns "Hoy" for today, "Ayer" for yesterday, or formatted date
+ */
 const formatDate = (date: Date): string => {
   const d = new Date(date);
   const today = new Date();
@@ -38,7 +43,7 @@ export const ExpenseCard: FC<ExpenseCardProps> = ({
   const category = getCategoryById(expense.categoryId);
   const isLowConfidence = expense.confidence < 0.7;
   
-  // Convertir a USD si está en COP
+  // Convert to USD if in COP
   const amountInUSD = convertToUSD(expense.amount, expense.currency);
   const showConversion = expense.currency === 'COP';
 
@@ -53,7 +58,7 @@ export const ExpenseCard: FC<ExpenseCardProps> = ({
         className
       )}
     >
-      {/* Emoji en círculo */}
+      {/* Category emoji in circle */}
       <div
         className="w-12 h-12 rounded-xl flex items-center justify-center text-xl shrink-0"
         style={{ backgroundColor: category ? `${category.color}15` : '#f1f5f9' }}
@@ -63,7 +68,7 @@ export const ExpenseCard: FC<ExpenseCardProps> = ({
 
       {/* Content */}
       <div className="flex-1 min-w-0">
-        {/* Título */}
+        {/* Title */}
         <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">
           {expense.description || 'Gasto'}
         </p>
@@ -92,14 +97,14 @@ export const ExpenseCard: FC<ExpenseCardProps> = ({
         </div>
       </div>
 
-      {/* Amount - ahora muestra ambas monedas */}
+      {/* Amount - displays both currencies */}
       <div className="shrink-0 text-right">
-        {/* Monto en USD (principal) */}
+        {/* Main amount in USD */}
         <p className="text-lg font-bold text-slate-900 dark:text-slate-100">
           {formatUSD(amountInUSD)}
         </p>
         
-        {/* Monto original en COP si es conversión */}
+        {/* Original COP amount if converted */}
         {showConversion && (
           <p className="text-[11px] text-slate-400 dark:text-slate-500">
             {formatCurrency(expense.amount, 'COP')}
@@ -107,7 +112,7 @@ export const ExpenseCard: FC<ExpenseCardProps> = ({
         )}
       </div>
 
-      {/* Actions */}
+      {/* Actions menu */}
       <div className="relative shrink-0">
         <button
           onClick={() => setShowMenu(!showMenu)}

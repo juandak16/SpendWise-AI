@@ -1,30 +1,23 @@
 /**
- * Servicio de persistencia de datos
- * MVP: localStorage
- * v2: Migrar a SQLite/Postgres
+ * Storage Service - localStorage persistence
  * @see architect.md - Service Layer
- * @see coder.md - Manejo de errores con try/catch
+ * @see dev.md - Error handling patterns
  */
 
-import type { Expense, Category } from '@/types';
+import type { Expense } from '@/types';
 
-/**
- * Claves de almacenamiento
- */
 const STORAGE_KEYS = {
   EXPENSES: 'spendwise_expenses',
-  CATEGORIES: 'spendwise_custom_categories',
-  USER_KEYWORDS: 'spendwise_user_keywords',
   SETTINGS: 'spendwise_settings',
 } as const;
 
 /**
- * Error personalizado para el servicio de almacenamiento
+ * Custom error for storage failures
  */
 export class StorageError extends Error {
   constructor(
     message: string,
-    public readonly code: 'READ_ERROR' | 'WRITE_ERROR' | 'DELETE_ERROR' | 'NOT_FOUND'
+    public readonly code: 'READ_ERROR' | 'WRITE_ERROR' | 'NOT_FOUND'
   ) {
     super(message);
     this.name = 'StorageError';
@@ -32,15 +25,13 @@ export class StorageError extends Error {
 }
 
 /**
- * Verifica si localStorage está disponible
+ * Checks if localStorage is available
  */
 const isStorageAvailable = (): boolean => {
-  if (typeof window === 'undefined') return false;
-  
   try {
     const test = '__storage_test__';
-    window.localStorage.setItem(test, test);
-    window.localStorage.removeItem(test);
+    localStorage.setItem(test, test);
+    localStorage.removeItem(test);
     return true;
   } catch {
     return false;
@@ -48,288 +39,142 @@ const isStorageAvailable = (): boolean => {
 };
 
 /**
- * Servicio de persistencia de datos
+ * Storage Service - localStorage persistence layer
  */
 export const storageService = {
-  // ==================== EXPENSES ====================
-
   /**
-   * Obtiene todos los gastos almacenados
+   * Retrieves all expenses from storage
+   * @throws {StorageError} If read fails
    */
   getExpenses: (): Expense[] => {
     try {
-      if (!isStorageAvailable()) return [];
+      if (!isStorageAvailable()) {
+        console.warn('[storageService] localStorage not available');
+        return [];
+      }
 
       const data = localStorage.getItem(STORAGE_KEYS.EXPENSES);
       if (!data) return [];
 
-      const parsed = JSON.parse(data);
-      
-      // Convertir strings de fecha a objetos Date
-      return parsed.map((expense: Expense) => ({
+      const parsed = JSON.parse(data) as Expense[];
+
+      // Validate and convert dates
+      return parsed.map((expense) => ({
         ...expense,
         date: new Date(expense.date),
         createdAt: new Date(expense.createdAt),
         updatedAt: new Date(expense.updatedAt),
       }));
     } catch (error) {
-      console.error('[storageService] getExpenses error:', error);
-      return [];
+      console.error('[storageService] Error reading expenses:', error);
+      throw new StorageError('Error al leer los gastos guardados', 'READ_ERROR');
     }
   },
 
   /**
-   * Guarda un nuevo gasto
+   * Saves a new expense to storage
+   * @throws {StorageError} If write fails
    */
   saveExpense: (expense: Expense): void => {
     try {
       if (!isStorageAvailable()) {
-        throw new StorageError('localStorage no disponible', 'WRITE_ERROR');
+        throw new StorageError('Almacenamiento no disponible', 'WRITE_ERROR');
       }
 
       const expenses = storageService.getExpenses();
       expenses.push(expense);
+
       localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(expenses));
     } catch (error) {
       if (error instanceof StorageError) throw error;
-      console.error('[storageService] saveExpense error:', error);
-      throw new StorageError('No se pudo guardar el gasto', 'WRITE_ERROR');
+      console.error('[storageService] Error saving expense:', error);
+      throw new StorageError('Error al guardar el gasto', 'WRITE_ERROR');
     }
   },
 
   /**
-   * Actualiza un gasto existente
+   * Updates an existing expense
+   * @returns The updated expense, or null if not found
    */
   updateExpense: (id: string, updates: Partial<Expense>): Expense | null => {
     try {
-      if (!isStorageAvailable()) {
-        throw new StorageError('localStorage no disponible', 'WRITE_ERROR');
-      }
-
       const expenses = storageService.getExpenses();
       const index = expenses.findIndex((e) => e.id === id);
 
-      if (index === -1) {
-        throw new StorageError('Gasto no encontrado', 'NOT_FOUND');
-      }
+      if (index === -1) return null;
 
-      const updated: Expense = {
+      const updatedExpense: Expense = {
         ...expenses[index],
         ...updates,
         updatedAt: new Date(),
       };
 
-      expenses[index] = updated;
+      expenses[index] = updatedExpense;
       localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(expenses));
 
-      return updated;
+      return updatedExpense;
     } catch (error) {
-      if (error instanceof StorageError) throw error;
-      console.error('[storageService] updateExpense error:', error);
-      throw new StorageError('No se pudo actualizar el gasto', 'WRITE_ERROR');
+      console.error('[storageService] Error updating expense:', error);
+      throw new StorageError('Error al actualizar el gasto', 'WRITE_ERROR');
     }
   },
 
   /**
-   * Elimina un gasto
+   * Deletes an expense by ID
+   * @returns true if deleted, false if not found
    */
   deleteExpense: (id: string): boolean => {
     try {
-      if (!isStorageAvailable()) {
-        throw new StorageError('localStorage no disponible', 'DELETE_ERROR');
-      }
-
       const expenses = storageService.getExpenses();
       const filtered = expenses.filter((e) => e.id !== id);
 
-      if (filtered.length === expenses.length) {
-        return false; // No se encontró el gasto
-      }
+      if (filtered.length === expenses.length) return false;
 
       localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(filtered));
       return true;
     } catch (error) {
-      console.error('[storageService] deleteExpense error:', error);
-      throw new StorageError('No se pudo eliminar el gasto', 'DELETE_ERROR');
+      console.error('[storageService] Error deleting expense:', error);
+      throw new StorageError('Error al eliminar el gasto', 'WRITE_ERROR');
     }
   },
 
   /**
-   * Obtiene un gasto por ID
+   * Clears all expenses from storage
    */
-  getExpenseById: (id: string): Expense | null => {
+  clearExpenses: (): void => {
     try {
-      const expenses = storageService.getExpenses();
-      return expenses.find((e) => e.id === id) || null;
-    } catch (error) {
-      console.error('[storageService] getExpenseById error:', error);
-      return null;
-    }
-  },
-
-  // ==================== CUSTOM CATEGORIES ====================
-
-  /**
-   * Obtiene categorías personalizadas del usuario
-   */
-  getCustomCategories: (): Category[] => {
-    try {
-      if (!isStorageAvailable()) return [];
-
-      const data = localStorage.getItem(STORAGE_KEYS.CATEGORIES);
-      if (!data) return [];
-
-      const parsed = JSON.parse(data);
-      return parsed.map((cat: Category) => ({
-        ...cat,
-        createdAt: new Date(cat.createdAt),
-      }));
-    } catch (error) {
-      console.error('[storageService] getCustomCategories error:', error);
-      return [];
-    }
-  },
-
-  /**
-   * Guarda una categoría personalizada
-   */
-  saveCustomCategory: (category: Category): void => {
-    try {
-      if (!isStorageAvailable()) {
-        throw new StorageError('localStorage no disponible', 'WRITE_ERROR');
-      }
-
-      const categories = storageService.getCustomCategories();
-      categories.push(category);
-      localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(categories));
-    } catch (error) {
-      if (error instanceof StorageError) throw error;
-      console.error('[storageService] saveCustomCategory error:', error);
-      throw new StorageError('No se pudo guardar la categoría', 'WRITE_ERROR');
-    }
-  },
-
-  /**
-   * Elimina una categoría personalizada
-   */
-  deleteCustomCategory: (id: number): boolean => {
-    try {
-      if (!isStorageAvailable()) {
-        throw new StorageError('localStorage no disponible', 'DELETE_ERROR');
-      }
-
-      const categories = storageService.getCustomCategories();
-      const filtered = categories.filter((c) => c.id !== id);
-
-      if (filtered.length === categories.length) {
-        return false;
-      }
-
-      localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(filtered));
-      return true;
-    } catch (error) {
-      console.error('[storageService] deleteCustomCategory error:', error);
-      throw new StorageError('No se pudo eliminar la categoría', 'DELETE_ERROR');
-    }
-  },
-
-  // ==================== USER KEYWORDS (Aprendizaje) ====================
-
-  /**
-   * Guarda una asociación palabra-categoría aprendida
-   */
-  saveUserKeyword: (keyword: string, categoryId: number): void => {
-    try {
-      if (!isStorageAvailable()) return;
-
-      const data = localStorage.getItem(STORAGE_KEYS.USER_KEYWORDS);
-      const keywords: Record<string, number> = data ? JSON.parse(data) : {};
-
-      keywords[keyword.toLowerCase()] = categoryId;
-      localStorage.setItem(STORAGE_KEYS.USER_KEYWORDS, JSON.stringify(keywords));
-    } catch (error) {
-      console.error('[storageService] saveUserKeyword error:', error);
-    }
-  },
-
-  /**
-   * Obtiene las asociaciones palabra-categoría aprendidas
-   */
-  getUserKeywords: (): Record<string, number> => {
-    try {
-      if (!isStorageAvailable()) return {};
-
-      const data = localStorage.getItem(STORAGE_KEYS.USER_KEYWORDS);
-      return data ? JSON.parse(data) : {};
-    } catch (error) {
-      console.error('[storageService] getUserKeywords error:', error);
-      return {};
-    }
-  },
-
-  // ==================== UTILITIES ====================
-
-  /**
-   * Limpia todos los datos almacenados
-   * ⚠️ Usar con precaución
-   */
-  clearAll: (): void => {
-    try {
-      if (!isStorageAvailable()) return;
-
       localStorage.removeItem(STORAGE_KEYS.EXPENSES);
-      localStorage.removeItem(STORAGE_KEYS.CATEGORIES);
-      localStorage.removeItem(STORAGE_KEYS.USER_KEYWORDS);
-      localStorage.removeItem(STORAGE_KEYS.SETTINGS);
     } catch (error) {
-      console.error('[storageService] clearAll error:', error);
+      console.error('[storageService] Error clearing expenses:', error);
+      throw new StorageError('Error al limpiar los gastos', 'WRITE_ERROR');
     }
   },
 
   /**
-   * Exporta todos los datos como JSON
+   * Exports all expenses as a JSON string (for backup)
    */
   exportData: (): string => {
-    try {
-      const data = {
-        expenses: storageService.getExpenses(),
-        customCategories: storageService.getCustomCategories(),
-        userKeywords: storageService.getUserKeywords(),
-        exportedAt: new Date().toISOString(),
-        version: '1.0.0',
-      };
-      return JSON.stringify(data, null, 2);
-    } catch (error) {
-      console.error('[storageService] exportData error:', error);
-      throw new StorageError('No se pudieron exportar los datos', 'READ_ERROR');
-    }
+    const expenses = storageService.getExpenses();
+    return JSON.stringify(expenses, null, 2);
   },
 
   /**
-   * Importa datos desde JSON
+   * Imports expenses from a JSON string (for restore)
+   * @throws {StorageError} If import fails
    */
-  importData: (jsonString: string): void => {
+  importData: (jsonData: string): number => {
     try {
-      if (!isStorageAvailable()) {
-        throw new StorageError('localStorage no disponible', 'WRITE_ERROR');
+      const expenses = JSON.parse(jsonData) as Expense[];
+
+      if (!Array.isArray(expenses)) {
+        throw new Error('Invalid data format');
       }
 
-      const data = JSON.parse(jsonString);
-
-      if (data.expenses && Array.isArray(data.expenses)) {
-        localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(data.expenses));
-      }
-
-      if (data.customCategories && Array.isArray(data.customCategories)) {
-        localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(data.customCategories));
-      }
-
-      if (data.userKeywords && typeof data.userKeywords === 'object') {
-        localStorage.setItem(STORAGE_KEYS.USER_KEYWORDS, JSON.stringify(data.userKeywords));
-      }
+      localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(expenses));
+      return expenses.length;
     } catch (error) {
-      console.error('[storageService] importData error:', error);
-      throw new StorageError('No se pudieron importar los datos', 'WRITE_ERROR');
+      console.error('[storageService] Error importing data:', error);
+      throw new StorageError('Error al importar los datos', 'WRITE_ERROR');
     }
   },
 };

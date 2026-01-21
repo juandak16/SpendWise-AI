@@ -1,6 +1,7 @@
 /**
- * 🔬 MOLÉCULA: StatCard
- * Tarjeta de estadística con icono y tendencia
+ * 🔬 MOLECULE: StatCard
+ * Statistics card with icon and trend indicator
+ * @see architect.md - Atomic Design (Molecules)
  */
 
 import { type FC, type ReactNode } from 'react';
@@ -95,7 +96,7 @@ export const StatCard: FC<StatCardProps> = ({
         )}
       </div>
 
-      {/* Trend */}
+      {/* Trend indicator */}
       {trend && trendInfo && TrendIcon && (
         <div className="flex items-center gap-2 mt-3">
           <div

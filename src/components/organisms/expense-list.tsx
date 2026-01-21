@@ -1,8 +1,9 @@
 'use client';
 
 /**
- * 🦠 ORGANISMO: ExpenseList
- * Lista de gastos con expansión
+ * 🦠 ORGANISM: ExpenseList
+ * Expandable list of expenses
+ * @see architect.md - Atomic Design (Organisms)
  */
 
 import { type FC, useEffect, useState } from 'react';
@@ -25,11 +26,11 @@ export const ExpenseList: FC<ExpenseListProps> = ({ limit = 5 }) => {
   const sortedExpenses = [...expenses]
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-  // Aplicar límite solo si no se muestra todo
+  // Apply limit only when not showing all
   const displayedExpenses = showAll ? sortedExpenses : sortedExpenses.slice(0, limit);
   const hasMore = expenses.length > limit;
 
-  // Loading
+  // Loading state
   if (isLoading && expenses.length === 0) {
     return (
       <div className="space-y-3">
@@ -44,7 +45,7 @@ export const ExpenseList: FC<ExpenseListProps> = ({ limit = 5 }) => {
     );
   }
 
-  // Empty
+  // Empty state
   if (expenses.length === 0) {
     return (
       <div className="py-12 px-6 rounded-2xl bg-white dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50">
@@ -79,7 +80,7 @@ export const ExpenseList: FC<ExpenseListProps> = ({ limit = 5 }) => {
         </span>
       </div>
 
-      {/* List */}
+      {/* Expense list */}
       <div className="space-y-2">
         {displayedExpenses.map((expense) => (
           <ExpenseCard

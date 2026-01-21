@@ -1,13 +1,15 @@
 'use client';
 
 /**
- * 🔬 MOLÉCULA: ExpenseInput
- * Input para agregar gastos con estilo premium
+ * 🔬 MOLECULE: ExpenseInput
+ * Premium expense input with natural language support
+ * @see architect.md - Atomic Design (Molecules)
  */
 
 import { type FC, useState, useCallback, type KeyboardEvent } from 'react';
 import { Send, Sparkles } from 'lucide-react';
 
+import { Input } from '@/components/atoms';
 import { useExpenseStore } from '@/stores';
 import { cn } from '@/lib/utils';
 
@@ -68,7 +70,7 @@ export const ExpenseInput: FC = () => {
             isFocused && 'ring-2 ring-emerald-500/30'
           )}
         >
-          <input
+          <Input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -78,17 +80,6 @@ export const ExpenseInput: FC = () => {
             placeholder={placeholder}
             disabled={isLoading}
             autoComplete="off"
-            className={cn(
-              'w-full px-4 py-3 rounded-xl text-sm font-medium',
-              'bg-slate-50 dark:bg-slate-700/50',
-              'border border-slate-200 dark:border-slate-600',
-              'text-slate-900 dark:text-slate-100',
-              'placeholder:text-slate-400 dark:placeholder:text-slate-500',
-              'focus:outline-none focus:border-emerald-500 dark:focus:border-emerald-400',
-              'disabled:opacity-50 disabled:cursor-not-allowed',
-              'transition-colors duration-200'
-            )}
-            style={{ color: 'white' }}
           />
         </div>
 

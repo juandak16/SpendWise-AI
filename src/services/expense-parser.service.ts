@@ -1,7 +1,7 @@
 /**
- * Servicio de parsing de gastos desde lenguaje natural
- * @see analyst.md - Sección "Ingreso de Gastos en Lenguaje Natural"
- * @see coder.md - Manejo de errores con try/catch
+ * Expense Parser Service - Natural Language Processing
+ * @see analyst.md - "Natural Language Expense Input" section
+ * @see dev.md - Error handling with try/catch
  */
 
 import type { ParsedExpense, CurrencyCode } from '@/types';
@@ -9,7 +9,7 @@ import { DEFAULT_CURRENCY, AMOUNT_LIMITS, isValidAmount } from '@/config';
 import { categorizerService } from './categorizer.service';
 
 /**
- * Error personalizado para el parser de gastos
+ * Custom error for expense parsing failures
  */
 export class ExpenseParserError extends Error {
   constructor(
@@ -22,21 +22,21 @@ export class ExpenseParserError extends Error {
 }
 
 /**
- * Patrones para detectar montos
+ * Patterns for amount detection
  */
 const AMOUNT_PATTERNS = {
-  // "150.000" o "80.000" (miles con punto - formato colombiano)
+  // "150.000" or "80.000" (thousands with dot - Colombian format)
   withThousandsDot: /(\d{1,3}(?:\.\d{3})+)/g,
-  // "1,500" o "80,000" (miles con coma - formato USD)
+  // "1,500" or "80,000" (thousands with comma - USD format)
   withThousandsComma: /(\d{1,3}(?:,\d{3})+)/g,
-  // "25.99" o "25,99" (decimales - 1 o 2 dígitos después del separador)
+  // "25.99" or "25,99" (decimals - 1 or 2 digits after separator)
   decimal: /(\d+[.,]\d{1,2})(?!\d)/g,
-  // Cualquier número (150000, 80000, 150, etc)
+  // Any number (150000, 80000, 150, etc)
   simple: /(\d+)/g,
 };
 
 /**
- * Patrones para detectar moneda
+ * Patterns for currency detection
  */
 const CURRENCY_PATTERNS = {
   USD: /(?:^|\s|\d)(usd|dolar|dolares|dollars?|us\$)(?:\s|$|[^\w])/i,
@@ -44,16 +44,16 @@ const CURRENCY_PATTERNS = {
 };
 
 /**
- * Patrones para detectar fechas relativas
+ * Patterns for relative date detection
  */
 const DATE_PATTERNS = {
-  ayer: /\bayer\b/i,
-  anteayer: /\banteayer\b|ante\s*ayer\b/i,
-  hoy: /\bhoy\b/i,
+  yesterday: /\bayer\b/i,
+  dayBeforeYesterday: /\banteayer\b|ante\s*ayer\b/i,
+  today: /\bhoy\b/i,
 };
 
 /**
- * Palabras a ignorar al extraer descripción
+ * Noise words to ignore when extracting description
  */
 const NOISE_WORDS = new Set([
   'gaste', 'gasté', 'pague', 'pagué', 'compre', 'compré',
@@ -64,16 +64,16 @@ const NOISE_WORDS = new Set([
 ]);
 
 /**
- * Servicio de parsing de gastos desde lenguaje natural
+ * Expense Parser Service - Parses natural language input into structured expense data
  */
 export const expenseParserService = {
   /**
-   * Parsea una entrada de lenguaje natural a un objeto estructurado
-   * @throws {ExpenseParserError} Si la entrada es inválida
+   * Parses a natural language input into a structured expense object
+   * @throws {ExpenseParserError} If input is invalid
    */
   parse: (input: string): ParsedExpense => {
     try {
-      // 1. Validar entrada
+      // 1. Validate input
       const trimmedInput = input.trim();
       if (!trimmedInput) {
         throw new ExpenseParserError(
@@ -84,10 +84,10 @@ export const expenseParserService = {
 
       const normalizedInput = trimmedInput.toLowerCase();
 
-      // 2. Detectar moneda
+      // 2. Detect currency
       const currency = expenseParserService.detectCurrency(normalizedInput);
 
-      // 3. Extraer monto
+      // 3. Extract amount
       const amount = expenseParserService.extractAmount(trimmedInput, currency);
 
       if (amount <= 0) {
@@ -97,7 +97,7 @@ export const expenseParserService = {
         );
       }
 
-      // 4. Validar límites
+      // 4. Validate limits
       if (!isValidAmount(amount, currency)) {
         const limits = AMOUNT_LIMITS[currency];
         throw new ExpenseParserError(
@@ -106,13 +106,13 @@ export const expenseParserService = {
         );
       }
 
-      // 5. Extraer descripción
+      // 5. Extract description
       const description = expenseParserService.extractDescription(trimmedInput);
 
-      // 6. Detectar fecha
+      // 6. Detect date
       const date = expenseParserService.extractDate(normalizedInput);
 
-      // 7. Categorizar
+      // 7. Categorize
       const categorization = categorizerService.categorize(description);
 
       return {
@@ -138,68 +138,68 @@ export const expenseParserService = {
   },
 
   /**
-   * Detecta la moneda basándose en el texto
-   * Prioridad: USD explícito > COP explícito > DEFAULT_CURRENCY
+   * Detects currency based on text content
+   * Priority: Explicit USD > Explicit COP > DEFAULT_CURRENCY
    */
   detectCurrency: (input: string): CurrencyCode => {
-    // Si menciona USD explícitamente
+    // If USD is explicitly mentioned
     if (CURRENCY_PATTERNS.USD.test(input)) {
       return 'USD';
     }
-    // Si menciona COP/pesos explícitamente
+    // If COP/pesos is explicitly mentioned
     if (CURRENCY_PATTERNS.COP.test(input)) {
       return 'COP';
     }
-    // Default
+    // Default currency
     return DEFAULT_CURRENCY;
   },
 
   /**
-   * Extrae el monto numérico del texto
+   * Extracts the numeric amount from text
    */
   extractAmount: (input: string, currency: CurrencyCode): number => {
-    // Limpiar símbolos de moneda
+    // Clean currency symbols
     let cleaned = input.replace(/\$|US\$|COP/gi, '');
 
-    // Para COP: buscar formato con puntos como separador de miles (80.000)
+    // For COP: Look for dot-separated thousands format (80.000)
     if (currency === 'COP') {
       const withThousands = cleaned.match(AMOUNT_PATTERNS.withThousandsDot);
       if (withThousands && withThousands.length > 0) {
-        // Convertir "80.000" -> 80000
+        // Convert "80.000" -> 80000
         const amountStr = withThousands[0].replace(/\./g, '');
         return parseInt(amountStr, 10);
       }
     }
 
-    // Para USD: buscar formato con comas como separador de miles (1,500)
+    // For USD: Look for comma-separated thousands format (1,500)
     if (currency === 'USD') {
       const withThousands = cleaned.match(AMOUNT_PATTERNS.withThousandsComma);
       if (withThousands && withThousands.length > 0) {
         const amountStr = withThousands[0].replace(/,/g, '');
-        return Math.round(parseFloat(amountStr) * 100); // Convertir a centavos
+        return Math.round(parseFloat(amountStr) * 100); // Convert to cents
       }
 
-      // Buscar decimales (25.99)
+      // Look for decimals (25.99)
       const decimals = cleaned.match(AMOUNT_PATTERNS.decimal);
       if (decimals && decimals.length > 0) {
-        return Math.round(parseFloat(decimals[0]) * 100); // Convertir a centavos
+        return Math.round(parseFloat(decimals[0]) * 100); // Convert to cents
       }
     }
 
-    // Fallback: buscar número simple (80000, 150, etc)
+    // Fallback: Look for simple numbers (80000, 150, etc)
     const simpleMatches = cleaned.match(AMOUNT_PATTERNS.simple);
     if (simpleMatches && simpleMatches.length > 0) {
-      // Tomar el número más grande (probablemente es el monto)
+      // Take the largest number (most likely the amount)
       const amounts = simpleMatches.map((m) => parseInt(m, 10));
       const maxAmount = Math.max(...amounts);
-      
+
       if (currency === 'USD') {
-        // Para USD: asumir que números < 10000 son dólares enteros
-        // (nadie escribe "80000" queriendo decir 800 dólares)
-        return maxAmount * 100; // Convertir a centavos
+        // For USD: Assume numbers < 10000 are whole dollars
+        // (nobody writes "80000" meaning 800 dollars)
+        return maxAmount * 100; // Convert to cents
       }
-      
-      // Para COP: el número ya está en pesos
+
+      // For COP: The number is already in pesos
       return maxAmount;
     }
 
@@ -207,7 +207,7 @@ export const expenseParserService = {
   },
 
   /**
-   * Extrae palabras clave para la descripción
+   * Extracts keywords for the description
    */
   extractDescription: (input: string): string => {
     const words = input
@@ -217,38 +217,38 @@ export const expenseParserService = {
       .replace(/[^\w\s]/g, ' ')
       .split(/\s+/)
       .filter((word) => {
-        // Filtrar palabras de ruido y números
+        // Filter noise words and numbers
         return (
-          word.length >= 2 && // Permitir palabras de 2+ caracteres (como "gas")
+          word.length >= 2 && // Allow 2+ character words (like "gas")
           !NOISE_WORDS.has(word) &&
           !/^\d+$/.test(word)
         );
       });
 
-    // Retornar las primeras 3-4 palabras relevantes
+    // Return the first 3-4 relevant words
     return words.slice(0, 4).join(' ');
   },
 
   /**
-   * Extrae la fecha del texto o retorna la fecha actual
+   * Extracts the date from text or returns current date
    */
   extractDate: (input: string): Date => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    if (DATE_PATTERNS.anteayer.test(input)) {
-      const anteayer = new Date(today);
-      anteayer.setDate(anteayer.getDate() - 2);
-      return anteayer;
+    if (DATE_PATTERNS.dayBeforeYesterday.test(input)) {
+      const dayBeforeYesterday = new Date(today);
+      dayBeforeYesterday.setDate(dayBeforeYesterday.getDate() - 2);
+      return dayBeforeYesterday;
     }
 
-    if (DATE_PATTERNS.ayer.test(input)) {
-      const ayer = new Date(today);
-      ayer.setDate(ayer.getDate() - 1);
-      return ayer;
+    if (DATE_PATTERNS.yesterday.test(input)) {
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+      return yesterday;
     }
 
-    // Por defecto: hoy
+    // Default: today
     return today;
   },
 };

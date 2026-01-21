@@ -1,5 +1,5 @@
 /**
- * 🦠 ORGANISMOS - Secciones completas de UI
+ * 🦠 ORGANISMS - Complete UI sections
  * @see architect.md - Atomic Design
  */
 

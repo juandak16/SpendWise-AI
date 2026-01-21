@@ -3,9 +3,9 @@
 import { Toaster } from 'sonner';
 
 /**
- * Provider del sistema de notificaciones Toast
- * Usa Sonner para mostrar feedback al usuario
- * @see coder.md - 3.2 Toast al Usuario
+ * Toast notification system provider
+ * Uses Sonner for user feedback
+ * @see dev.md - 3.2 Toast to User pattern
  */
 export const ToasterProvider = () => {
   return (

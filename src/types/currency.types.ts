@@ -1,11 +1,11 @@
 /**
- * Códigos de moneda soportados por SpendWise AI
- * @see analyst.md - Sección de monedas (COP y USD)
+ * Currency codes supported by SpendWise AI
+ * @see analyst.md - Currency section (COP and USD)
  */
 export type CurrencyCode = 'COP' | 'USD';
 
 /**
- * Configuración de formato para cada moneda
+ * Format configuration for each currency
  */
 export interface CurrencyConfig {
   readonly code: CurrencyCode;
@@ -17,6 +17,6 @@ export interface CurrencyConfig {
 }
 
 /**
- * Mapa de configuraciones de moneda
+ * Map of currency configurations
  */
 export type CurrencyMap = Record<CurrencyCode, CurrencyConfig>;

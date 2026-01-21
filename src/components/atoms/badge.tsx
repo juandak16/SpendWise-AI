@@ -1,6 +1,7 @@
 /**
- * ⚛️ ÁTOMO: Badge
- * Etiqueta pequeña con color
+ * ⚛️ ATOM: Badge
+ * Small colored label component
+ * @see architect.md - Atomic Design (Atoms)
  */
 
 import { type FC, type HTMLAttributes } from 'react';

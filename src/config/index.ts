@@ -1,23 +1,24 @@
-// Categories
+/**
+ * Configuration - Application settings and constants
+ * @see architect.md - Config layer
+ */
+
 export {
-  DEFAULT_CATEGORIES,
+  CATEGORIES,
+  CategoryId,
   getCategoryById,
-  getOtherCategory,
+  getCategoryByName,
 } from './categories.config';
 
-// Currencies
 export {
   CURRENCIES,
   DEFAULT_CURRENCY,
-  BASE_CURRENCY,
-  AMOUNT_LIMITS,
   EXCHANGE_RATE_COP_TO_USD,
-  getCurrencyConfig,
+  AMOUNT_LIMITS,
+  convertToUSD,
+  convertToCOP,
   formatCurrency,
   formatUSD,
-  parseAmountString,
   isValidAmount,
-  convertToUSD,
-  convertFromUSD,
   getExchangeRateLabel,
 } from './currencies.config';

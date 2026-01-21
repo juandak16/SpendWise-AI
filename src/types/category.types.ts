@@ -1,6 +1,6 @@
 /**
- * Categoría de gasto
- * @see analyst.md - Tabla de categorías base
+ * Expense category
+ * @see analyst.md - Base categories table
  */
 export interface Category {
   readonly id: number;
@@ -13,7 +13,7 @@ export interface Category {
 }
 
 /**
- * IDs de categorías predefinidas (inmutables)
+ * Predefined category IDs (immutable)
  */
 export enum DefaultCategoryId {
   FOOD = 1,
@@ -30,11 +30,24 @@ export enum DefaultCategoryId {
 }
 
 /**
- * Input para crear una categoría personalizada
+ * Input for creating a custom category
  */
 export interface CreateCategoryInput {
   name: string;
   emoji: string;
   keywords: string[];
   color: string;
+}
+
+/**
+ * Result of the categorization process
+ * @see analyst.md - Automatic categorization
+ */
+export interface CategorizationResult {
+  categoryId: number;
+  confidence: number;
+  suggestions: Array<{
+    categoryId: number;
+    confidence: number;
+  }>;
 }

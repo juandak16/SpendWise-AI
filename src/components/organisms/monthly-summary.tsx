@@ -1,8 +1,9 @@
 'use client';
 
 /**
- * 🦠 ORGANISMO: MonthlySummary
- * Grid de estadísticas - Todo convertido a USD
+ * 🦠 ORGANISM: MonthlySummary
+ * Statistics grid - All amounts converted to USD
+ * @see architect.md - Atomic Design (Organisms)
  */
 
 import { type FC } from 'react';
@@ -11,7 +12,11 @@ import { useExpenseStore } from '@/stores';
 import { formatUSD, getCategoryById, getExchangeRateLabel } from '@/config';
 import { cn } from '@/lib/utils';
 
-export const MonthlySummary: FC = () => {
+export interface MonthlySummaryProps {
+  className?: string;
+}
+
+export const MonthlySummary: FC<MonthlySummaryProps> = ({ className }) => {
   const getMonthlySummary = useExpenseStore((state) => state.getMonthlySummary);
   const expenses = useExpenseStore((state) => state.expenses);
   
@@ -19,10 +24,10 @@ export const MonthlySummary: FC = () => {
   const summary = getMonthlySummary(now.getMonth() + 1, now.getFullYear());
   const topCategory = getCategoryById(summary.topCategory.categoryId);
 
-  // Estado vacío
+  // Empty state
   if (expenses.length === 0) {
     return (
-      <div className="grid grid-cols-2 gap-4">
+      <div className={cn('grid grid-cols-2 gap-4', className)}>
         {[1, 2, 3, 4].map((i) => (
           <div
             key={i}
@@ -94,7 +99,7 @@ export const MonthlySummary: FC = () => {
   };
 
   return (
-    <div className="space-y-3">
+    <div className={cn('space-y-3', className)}>
       {/* Exchange rate label */}
       <div className="flex items-center justify-end gap-1.5 text-[11px] text-slate-400 dark:text-slate-500">
         <RefreshCw className="w-3 h-3" />

@@ -1,5 +1,5 @@
 /**
- * ⚛️ ÁTOMOS - Elementos UI básicos e indivisibles
+ * ⚛️ ATOMS - Basic indivisible UI elements
  * @see architect.md - Atomic Design
  */
 

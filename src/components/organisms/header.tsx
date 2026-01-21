@@ -1,8 +1,9 @@
 'use client';
 
 /**
- * 🦠 ORGANISMO: Header
- * Header con logo, fecha actual y estado
+ * 🦠 ORGANISM: Header
+ * App header with logo, current date, and status
+ * @see architect.md - Atomic Design (Organisms)
  */
 
 import { type FC } from 'react';
@@ -16,7 +17,7 @@ export interface HeaderProps {
 export const Header: FC<HeaderProps> = ({ className }) => {
   const now = new Date();
   
-  // Fecha completa: "Sábado, 18 de enero 2026"
+  // Full date format: "Sábado, 18 de enero 2026"
   const fullDate = now.toLocaleDateString('es-CO', { 
     weekday: 'long', 
     day: 'numeric', 
@@ -42,7 +43,7 @@ export const Header: FC<HeaderProps> = ({ className }) => {
         </div>
       </div>
 
-      {/* Status */}
+      {/* AI Status badge */}
       <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20">
         <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
         <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400">

@@ -1,12 +1,15 @@
-// Expense Parser
-export { expenseParserService, ExpenseParserError } from './expense-parser.service';
+/**
+ * Services Layer - Business logic and data processing
+ * @see architect.md - Service Layer architecture
+ */
 
-// Categorizer
+export {
+  expenseParserService,
+  ExpenseParserError,
+} from './expense-parser.service';
+
 export { categorizerService } from './categorizer.service';
-export type { CategorizationResult } from './categorizer.service';
 
-// Calculator
 export { calculatorService } from './calculator.service';
 
-// Storage
 export { storageService, StorageError } from './storage.service';

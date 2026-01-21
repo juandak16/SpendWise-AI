@@ -1,6 +1,7 @@
 /**
- * ⚛️ ÁTOMO: Card
- * Contenedor con estilos de tarjeta
+ * ⚛️ ATOM: Card
+ * Card container with styled border and shadow
+ * @see architect.md - Atomic Design (Atoms)
  */
 
 import { type FC, type HTMLAttributes } from 'react';

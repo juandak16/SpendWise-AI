@@ -2,8 +2,8 @@ import type { Category } from '@/types';
 import { DefaultCategoryId } from '@/types';
 
 /**
- * Categorías base del sistema
- * @see analyst.md - Tabla de categorías definida por Penny
+ * Base system categories
+ * @see analyst.md - Categories table defined by Penny
  */
 export const DEFAULT_CATEGORIES: readonly Category[] = [
   {
@@ -108,14 +108,33 @@ export const DEFAULT_CATEGORIES: readonly Category[] = [
 ] as const;
 
 /**
- * Obtiene una categoría por su ID
+ * Alias for backwards compatibility
+ */
+export const CATEGORIES = DEFAULT_CATEGORIES;
+
+/**
+ * Category ID enum alias for external use
+ */
+export const CategoryId = DefaultCategoryId;
+
+/**
+ * Gets a category by its ID
  */
 export const getCategoryById = (id: number): Category | undefined => {
   return DEFAULT_CATEGORIES.find((cat) => cat.id === id);
 };
 
 /**
- * Obtiene la categoría "Otros" (fallback)
+ * Gets a category by name
+ */
+export const getCategoryByName = (name: string): Category | undefined => {
+  return DEFAULT_CATEGORIES.find(
+    (cat) => cat.name.toLowerCase() === name.toLowerCase()
+  );
+};
+
+/**
+ * Gets the "Others" category (fallback)
  */
 export const getOtherCategory = (): Category => {
   return DEFAULT_CATEGORIES.find((cat) => cat.id === DefaultCategoryId.OTHER)!;

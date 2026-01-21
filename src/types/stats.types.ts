@@ -1,44 +1,53 @@
-import type { CurrencyCode } from './currency.types';
-
 /**
- * Resumen mensual de gastos
- * @see analyst.md - Métricas requeridas
+ * Monthly expense summary
+ * @see analyst.md - Required metrics
  */
 export interface MonthlySummary {
   readonly month: number;            // 1-12
   readonly year: number;
-  readonly currency: CurrencyCode;
-  readonly totalAmount: number;
+  readonly totalAmount: number;      // In USD (cents)
   readonly transactionCount: number;
   readonly dailyAverage: number;
+  readonly projectedTotal: number;   // Month-end projection
+  readonly categoryBreakdown: CategoryBreakdown[];
   readonly topCategory: {
     categoryId: number;
-    amount: number;
     percentage: number;
   };
-  readonly projectedTotal: number;   // Proyección a fin de mes
   readonly vsLastMonth: {
     amount: number;
     percentage: number;
-    trend: 'up' | 'down' | 'stable';
+    trend: 'up' | 'down' | 'same';
   };
 }
 
 /**
- * Totales agrupados por categoría
+ * Category totals grouped
  */
 export interface CategoryTotal {
   readonly categoryId: number;
   readonly amount: number;
   readonly count: number;
-  readonly percentage: number;       // Del total mensual
+  readonly percentage: number;       // Of monthly total
 }
 
 /**
- * Estadísticas diarias para gráficas
+ * Daily statistics for charts
  */
 export interface DailyStats {
   readonly date: Date;
   readonly amount: number;
   readonly count: number;
+}
+
+/**
+ * Category breakdown for reports
+ * @see calculator.service.ts
+ */
+export interface CategoryBreakdown {
+  categoryId: number;
+  categoryName: string;
+  totalAmount: number;
+  percentage: number;
+  transactionCount: number;
 }

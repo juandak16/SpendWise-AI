@@ -1,22 +1,22 @@
 /**
- * 🧩 Componentes React (Atomic Design)
- * @see architect.md - Estructura de componentes
+ * 🧩 React Components (Atomic Design)
+ * @see architect.md - Component structure
  *
- * Jerarquía:
- * - atoms/     → Elementos UI básicos (Button, Input, Badge)
- * - molecules/ → Combinación de átomos (ExpenseInput, ExpenseCard)
- * - organisms/ → Secciones completas (ExpenseList, MonthlySummary)
- * - templates/ → Layouts de página (DashboardLayout)
+ * Hierarchy:
+ * - atoms/     → Basic UI elements (Button, Input, Badge)
+ * - molecules/ → Atom combinations (ExpenseInput, ExpenseCard)
+ * - organisms/ → Complete sections (ExpenseList, MonthlySummary)
+ * - templates/ → Page layouts (DashboardLayout)
  * - providers/ → Context providers (ToasterProvider)
  */
 
-// ⚛️ Átomos
+// ⚛️ Atoms
 export * from './atoms';
 
-// 🔬 Moléculas
+// 🔬 Molecules
 export * from './molecules';
 
-// 🦠 Organismos
+// 🦠 Organisms
 export * from './organisms';
 
 // 📄 Templates

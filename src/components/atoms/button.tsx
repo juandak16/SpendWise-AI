@@ -1,8 +1,9 @@
 'use client';
 
 /**
- * ⚛️ ÁTOMO: Button
- * Elemento UI básico e indivisible
+ * ⚛️ ATOM: Button
+ * Basic indivisible UI element
+ * @see architect.md - Atomic Design (Atoms)
  */
 
 import { type FC, type ButtonHTMLAttributes } from 'react';

@@ -1,5 +1,5 @@
 /**
- * 📄 TEMPLATES - Layouts de página
+ * 📄 TEMPLATES - Page layouts
  * @see architect.md - Atomic Design
  */
 

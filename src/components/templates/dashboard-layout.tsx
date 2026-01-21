@@ -1,6 +1,7 @@
 /**
  * 📄 TEMPLATE: DashboardLayout
- * Layout principal del dashboard
+ * Main dashboard page layout
+ * @see architect.md - Atomic Design (Templates)
  */
 
 import { type FC, type ReactNode } from 'react';
@@ -30,7 +31,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({
 
       {/* Main content */}
       <div className="flex">
-        {/* Sidebar (futuro) */}
+        {/* Sidebar (future expansion) */}
         {sidebar && (
           <aside className="w-64 shrink-0">
             {sidebar}

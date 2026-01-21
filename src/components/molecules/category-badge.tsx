@@ -1,6 +1,7 @@
 /**
- * 🔬 MOLÉCULA: CategoryBadge
- * Combina Badge + datos de categoría (emoji, nombre, color)
+ * 🔬 MOLECULE: CategoryBadge
+ * Combines Badge + category data (emoji, name, color)
+ * @see architect.md - Atomic Design (Molecules)
  */
 
 import { type FC } from 'react';
@@ -21,7 +22,7 @@ export const CategoryBadge: FC<CategoryBadgeProps> = ({
   showName = true,
   size = 'md',
 }) => {
-  // Si solo recibimos categoryId, buscar la categoría
+  // If only categoryId provided, look up the category
   const resolvedCategory = category || (categoryId ? getCategoryById(categoryId) : undefined);
 
   if (!resolvedCategory) {

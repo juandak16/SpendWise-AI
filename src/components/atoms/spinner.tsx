@@ -1,6 +1,7 @@
 /**
- * ⚛️ ÁTOMO: Spinner
- * Indicador de carga
+ * ⚛️ ATOM: Spinner
+ * Loading indicator component
+ * @see architect.md - Atomic Design (Atoms)
  */
 
 import { type FC } from 'react';

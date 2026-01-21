@@ -1,5 +1,5 @@
 /**
- * 🔬 MOLÉCULAS - Combinación de átomos con función específica
+ * 🔬 MOLECULES - Atom combinations with specific functionality
  * @see architect.md - Atomic Design
  */
 
