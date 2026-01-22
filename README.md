@@ -3,356 +3,234 @@
 <div align="center">
 
 ![SpendWise AI](https://img.shields.io/badge/SpendWise-AI-gradient?style=for-the-badge&logo=openai&logoColor=white&color=10B981)
+![BMAD v6](https://img.shields.io/badge/BMAD--METHOD™-v6-purple?style=for-the-badge)
 ![Next.js 14](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.4-blue?style=for-the-badge&logo=typescript)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)
+![Storybook](https://img.shields.io/badge/Storybook-8.4-FF4785?style=for-the-badge&logo=storybook)
 
-**Gestor de gastos inteligente con procesamiento de lenguaje natural**
+**AI-Powered Expense Manager with Natural Language Processing**
 
-*Registra tus gastos escribiendo naturalmente, como lo harías en una conversación.*
+*Register expenses by typing naturally—no forms, no friction.*
 
-[Demo](#) • [Documentación](#arquitectura-del-proyecto) • [Contribuir](#cómo-colaborar-con-la-ia)
+[Quick Start](#-quick-start) • [Architecture](#-architecture) • [Storybook](#-ui-documentation) • [Contributing](#-development-workflow)
 
 </div>
 
 ---
 
-## 🎯 ¿Qué es SpendWise AI?
+## 🎯 Project Overview
 
-SpendWise AI es un gestor de gastos mensuales inteligente que te permite registrar gastos usando **lenguaje natural**. Olvídate de formularios complicados—simplemente escribe como hablas:
+SpendWise AI is an intelligent monthly expense tracker that lets users register expenses using **natural language** in Spanish. Simply type as you would speak:
 
 ```
-"Gasté 150.000 en el super"
-"Uber al trabajo 12.500"
-"Netflix mensual $15 USD"
-"Pagué 80.000 COP en gas"
+"Gasté 150.000 en el super"     →  🍔 Alimentación | $40.54 USD
+"Uber al trabajo 12.500"        →  🚗 Transporte   | $3.38 USD
+"Netflix mensual $15 USD"       →  🎬 Entretenimiento | $15.00 USD
+"Ayuda a mamá 200.000 COP"      →  👨‍👩‍👧 Familia | $54.05 USD
 ```
 
-La IA se encarga de:
-- ✨ **Extraer el monto** automáticamente
-- 🏷️ **Categorizar** el gasto (Alimentación, Transporte, Hogar, etc.)
-- 💱 **Detectar la moneda** (COP/USD)
-- 📊 **Calcular totales** y proyecciones en tiempo real
+**Core Features:**
+- ✨ Natural language expense input (Spanish)
+- 🏷️ Automatic categorization with 11 categories
+- 💱 Dual currency support (COP/USD) with live conversion
+- 📊 Monthly summaries, projections, and trend analysis
+- 🎨 Modern dark-themed UI built with Atomic Design
 
 ---
 
-## 🛠️ Core Technology Stack
+## 🏛️ Architecture
 
-| Tecnología | Versión | Propósito |
-|------------|---------|-----------|
-| **Next.js** | 14.2+ | Framework React con App Router |
-| **TypeScript** | 5.4+ | Tipado estricto end-to-end |
-| **Zustand** | 4.5+ | Estado global ligero y reactivo |
-| **Tailwind CSS** | 3.4+ | Estilos utility-first |
-| **Shadcn/UI** | Latest | Componentes accesibles y personalizables |
-| **Sonner** | 1.4+ | Sistema de notificaciones toast |
-| **Lucide React** | 0.344+ | Iconografía moderna |
+SpendWise AI follows **Atomic Design** and **Clean Architecture** principles, ensuring scalability and maintainability.
+
+### Component Hierarchy
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  ⚛️ ATOMS        →  Button, Input, Badge, Spinner, Card     │
+│       ↓                                                     │
+│  🔬 MOLECULES    →  ExpenseInput, ExpenseCard, StatCard     │
+│       ↓                                                     │
+│  🦠 ORGANISMS    →  ExpenseList, Header, MonthlySummary     │
+│       ↓                                                     │
+│  📄 TEMPLATES    →  DashboardLayout                         │
+│       ↓                                                     │
+│  📱 PAGES        →  app/page.tsx                            │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Service Layer (Business Logic)
+
+| Service | Responsibility |
+|---------|---------------|
+| `expense-parser` | Parse natural language → structured expense |
+| `categorizer` | Match keywords → category with confidence score |
+| `calculator` | Financial calculations, summaries, projections |
+| `storage` | localStorage CRUD operations |
+
+### Source Tree Reference
+
+> 📁 **Canonical structure defined in:** `.bmad-core/data/source-tree.md`
+
+All structural decisions, naming conventions, and import rules are documented there. **Consult before creating new files.**
 
 ---
 
-## 🤖 The BMAD Method™ Implementation
+## 🤖 BMAD-METHOD™ Framework Integration
 
-> **BMAD** = **B**MAD **M**ethod for **A**gile AI-**D**riven Development
+This project is powered by **BMAD-METHOD™ v6** (Agile AI-Driven Development), a framework where specialized AI agents collaborate on different aspects of the software.
 
-Este proyecto implementa el **BMAD-METHOD™**, una metodología de desarrollo donde agentes de IA especializados colaboran en diferentes aspectos del software. Cada agente tiene su "conciencia" definida en archivos Markdown que persisten el conocimiento del proyecto.
+### Agent Orchestra
 
-### 📁 La Carpeta `/.bmad/`
+| Agent | Role | Responsibilities |
+|-------|------|------------------|
+| 🪙 **Penny** | Financial Product Analyst | Requirements, categorization logic, numerical precision |
+| 🏗️ **Archi** | System Architect | Folder structure, TypeScript interfaces, Atomic Design |
+| 💻 **Cody** | Senior Developer | Implementation following Types → Services → Stores → Components |
+| 🧪 **QA** | Quality Assurance | Testing strategies, validation checklists |
+
+### Agent Files Location
 
 ```
-/.bmad/
-├── analyst.md    # 🪙 Penny - Requerimientos de producto
-├── architect.md  # 🏗️ Archi - Arquitectura técnica
-└── coder.md      # 💻 Cody - Implementación y estándares
+.bmad-core/
+├── agents/
+│   ├── analyst.md       # 🪙 Penny's knowledge & commands
+│   ├── architect.md     # 🏗️ Archi's knowledge & commands
+│   └── dev.md           # 💻 Cody's knowledge & commands
+├── data/
+│   ├── source-tree.md   # 📁 Canonical folder structure
+│   └── active-sprint.yaml # 📋 Current sprint tracking
+└── core-config.yaml     # ⚙️ Project configuration
 ```
 
-Esta carpeta contiene la **fuente de verdad** del proyecto. Cualquier decisión de diseño, patrón de código o requerimiento funcional está documentado aquí.
+### Using Agents in Cursor
 
-### 🎭 Los Agentes
+Reference agents with `@` to provide context:
 
-#### 🪙 **Penny** — Financial Product Analyst
+```
+@architect.md Where should I create a new filtering component?
+
+@analyst.md What validation rules apply to expense amounts?
+
+@dev.md Implement a hook for filtering expenses by category
+```
+
+---
+
+## 📋 Development Workflow
+
+### Sprint Tracking
+
+Active tasks are tracked in `active-sprint.yaml`:
+
 ```yaml
-role: "Financial Product Analyst"
-persona: "Experta en finanzas personales, metódica y enfocada en la integridad de los datos numéricos."
+sprint:
+  id: SPRINT-003
+  name: "Storybook Integration"
+  status: completed
+
+stories:
+  - id: US-STORY-008
+    title: "Molecule Stories - ExpenseCard"
+    status: done
+    file: src/components/molecules/expense-card.stories.tsx
 ```
 
-**Responsabilidades:**
-- Definir requerimientos funcionales del tracker de gastos
-- Establecer categorías base y keywords para categorización
-- Validar la lógica de cálculos financieros
-- Garantizar precisión numérica (aritmética de punto fijo)
+**Workflow:**
+1. Check `active-sprint.yaml` for current tasks
+2. Consult relevant agent for guidance (`@architect.md`, `@analyst.md`)
+3. Implement following Cody's order: **Types → Services → Stores → Components**
+4. Update story status when complete
 
-**Comandos:**
-- `*define-categories` — Gestionar categorías de gastos
-- `*structure-expense` — Estructurar un gasto desde lenguaje natural
-- `*validate-logic` — Validar lógica de negocio
+### UI Documentation
 
----
-
-#### 🏗️ **Archi** — System Architect
-```yaml
-role: "System Architect"
-persona: "Pragmático, experto en Next.js, TypeScript y patrones de diseño. Prioriza la mantenibilidad y el tipado estricto."
-```
-
-**Responsabilidades:**
-- Definir estructura de carpetas (Next.js 14 App Router)
-- Establecer interfaces TypeScript exactas
-- Diseñar la estrategia de componentes (Atomic Design)
-- Especificar el Service Layer
-
-**Comandos:**
-- `*define-boilerplate` — Generar estructura para nuevas features
-- `*setup-types` — Crear/actualizar definiciones TypeScript
-- `*enforce-standards` — Validar estándares del código
-
----
-
-#### 💻 **Cody** — Senior Fullstack Developer
-```yaml
-role: "Senior Fullstack Developer"
-persona: "Eficiente, obsesionado con el código limpio, seco (DRY) y el manejo de errores."
-```
-
-**Responsabilidades:**
-- Implementar código siguiendo el orden: Types → Services → Stores → Components
-- Garantizar manejo de errores con try/catch y toasts
-- Aplicar estilo de código consistente (Arrow Functions, Named Exports)
-- Seguir las directrices de Archi
-
-**Comandos:**
-- `*create-component` — Generar componente con convenciones
-- `*implement-service` — Implementar servicio de lógica de negocio
-- `*refactor-code` — Refactorizar aplicando DRY
-- `*add-unit-test` — Generar tests unitarios
-
----
-
-## 🏛️ Arquitectura del Proyecto
-
-### 📦 Atomic Design para Componentes
-
-SpendWise AI utiliza **Atomic Design** para organizar componentes de forma escalable:
-
-```
-components/
-├── atoms/        ⚛️  Elementos UI básicos (Button, Input, Badge)
-├── molecules/    🔬  Combinación de átomos (ExpenseInput, StatCard)
-├── organisms/    🦠  Secciones completas (ExpenseList, Header)
-├── templates/    📄  Layouts de página (DashboardLayout)
-└── providers/    🔌  Context providers (ToasterProvider)
-```
-
-| Nivel | Puede importar | NO puede importar |
-|-------|----------------|-------------------|
-| **Atoms** | libs, utils | Molecules, Organisms |
-| **Molecules** | Atoms, libs | Organisms, Templates |
-| **Organisms** | Atoms, Molecules | Templates |
-| **Templates** | Todo lo anterior | — |
-
-### 🔧 Service Layer
-
-La lógica de negocio está separada de la UI en servicios puros:
-
-```
-services/
-├── expense-parser.service.ts    # 📝 Parseo de lenguaje natural
-├── categorizer.service.ts       # 🏷️ Categorización automática
-├── calculator.service.ts        # 🔢 Cálculos financieros
-└── storage.service.ts           # 💾 Persistencia (localStorage MVP)
-```
-
-**Flujo de datos:**
-
-```
-Usuario escribe → ExpenseParser → Categorizer → Store (Zustand) → Storage → UI actualizada
-     "50k super"      ↓                ↓            ↓              ↓
-                   {amount: 50000}  {cat: 🍔}    [expenses]    localStorage
-```
-
-### 🗄️ Estado Global con Zustand
-
-```typescript
-// stores/expense.store.ts
-interface ExpenseState {
-  expenses: Expense[];
-  isLoading: boolean;
-  error: string | null;
-  
-  // Actions
-  loadExpenses: () => void;
-  addExpenseFromInput: (input: string) => void;
-  deleteExpense: (id: string) => void;
-}
-```
-
----
-
-## 🚀 Guía de Inicio Rápido
-
-### Prerrequisitos
-
-- Node.js 18+
-- pnpm (recomendado) o npm
-
-### Instalación
+All components are documented in **Storybook** with Spanish UI text:
 
 ```bash
-# 1. Clonar el repositorio
-git clone https://github.com/tu-usuario/spendwise-ai.git
+pnpm storybook    # Start Storybook at http://localhost:6006
+```
+
+**Coverage:**
+- ✅ All Atoms (Button, Input, Badge, Spinner, Card)
+- ✅ All Molecules (ExpenseInput, ExpenseCard, StatCard, CategoryBadge, CurrencyDisplay)
+- ✅ All Organisms (ExpenseList, Header, MonthlySummary)
+- ✅ Templates (DashboardLayout)
+
+Stories include: default states, variants, loading states, empty states, dark/light themes.
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technology | Version |
+|----------|------------|---------|
+| **Framework** | Next.js (App Router) | 14.2+ |
+| **Language** | TypeScript (strict) | 5.4+ |
+| **State** | Zustand | 4.5+ |
+| **Styling** | Tailwind CSS | 3.4+ |
+| **Components** | Shadcn/UI | Latest |
+| **Icons** | Lucide React | 0.344+ |
+| **Toasts** | Sonner | 1.4+ |
+| **Docs** | Storybook | 8.4.7 |
+| **Package Manager** | pnpm | 8+ |
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- pnpm (`npm install -g pnpm`)
+
+### Installation
+
+```bash
+# Clone repository
+git clone https://github.com/your-org/spendwise-ai.git
 cd spendwise-ai
 
-# 2. Instalar dependencias
+# Install dependencies
 pnpm install
 
-# 3. Iniciar servidor de desarrollo
+# Start development server
 pnpm dev
 ```
 
-### Abrir en el navegador
+### Available Scripts
 
-```
-http://localhost:3000
-```
-
-### Scripts disponibles
-
-| Comando | Descripción |
+| Command | Description |
 |---------|-------------|
-| `pnpm dev` | Servidor de desarrollo con hot-reload |
-| `pnpm build` | Build de producción |
-| `pnpm start` | Iniciar servidor de producción |
-| `pnpm lint` | Ejecutar ESLint |
+| `pnpm dev` | Development server (http://localhost:3000) |
+| `pnpm build` | Production build |
+| `pnpm storybook` | Storybook (http://localhost:6006) |
+| `pnpm lint` | ESLint check |
 
 ---
 
-## 🤝 Cómo Colaborar con la IA
+## 📁 Key Files for New Developers
 
-Este proyecto está optimizado para desarrollo con **Cursor IDE** y sus capacidades de IA.
-
-### 📖 Lectura de Contexto
-
-Antes de pedirle a la IA que implemente algo, usa `@` para referenciar los agentes:
-
-```
-@architect.md ¿Dónde debo crear un nuevo servicio de presupuestos?
-
-@coder.md Implementa un custom hook para filtrar gastos por categoría
-
-@analyst.md ¿Qué métricas adicionales necesitamos para el dashboard?
-```
-
-### ⚡ Usando Comandos de Agentes
-
-Los agentes tienen comandos YAML definidos que puedes invocar:
-
-```
-@coder.md *create-component name:BudgetCard path:budgets props:[budget:Budget]
-
-@architect.md *setup-types from:analyst.md section:"Presupuestos"
-
-@analyst.md *validate-logic calculate-budget-remaining
-```
-
-### 🔄 Flujo de Trabajo Recomendado
-
-1. **Consulta a Penny** → ¿Cuáles son los requerimientos?
-2. **Consulta a Archi** → ¿Dónde va el código y qué tipos necesito?
-3. **Instruye a Cody** → Implementa siguiendo las directrices
-
-```
-@analyst.md @architect.md @coder.md 
-
-Necesito agregar una feature de presupuestos mensuales.
-Penny: Define los requerimientos.
-Archi: Define la estructura de archivos y tipos.
-Cody: Implementa siguiendo el orden Types → Services → Stores → Components.
-```
+| File | Purpose |
+|------|---------|
+| `.bmad-core/data/source-tree.md` | **Canonical folder structure** - consult before creating files |
+| `.bmad-core/data/active-sprint.yaml` | Current sprint tasks and status |
+| `.bmad-core/agents/*.md` | Agent definitions with project knowledge |
+| `src/config/categories.config.ts` | Expense categories and keywords |
+| `src/config/currencies.config.ts` | Currency settings (COP/USD) |
 
 ---
 
-## 📊 Estado del Proyecto
+## 🌐 Language Rules
 
-### ✅ MVP Completado
-
-| Feature | Estado | Descripción |
-|---------|--------|-------------|
-| 🗣️ Ingreso en lenguaje natural | ✅ | "Gasté 50.000 en comida" |
-| 🏷️ Categorización automática | ✅ | 11 categorías + fuzzy matching |
-| 💱 Soporte multi-moneda | ✅ | COP y USD con conversión |
-| 📈 Resumen mensual | ✅ | Total, promedio, proyección |
-| 💾 Persistencia local | ✅ | localStorage |
-| 🎨 UI moderna | ✅ | Tailwind + Shadcn |
-| 🔔 Notificaciones | ✅ | Sonner toasts |
-
-### 🗓️ Roadmap
-
-| Versión | Features Planeadas |
-|---------|-------------------|
-| **v0.2** | Gráficas de categorías, filtros avanzados |
-| **v0.3** | Presupuestos mensuales con alertas |
-| **v0.4** | Exportar a CSV/PDF |
-| **v1.0** | Autenticación, sincronización cloud |
+| Context | Language |
+|---------|----------|
+| Code (variables, functions, comments) | English |
+| Documentation (technical) | English |
+| UI Text (labels, placeholders, messages) | **Spanish** |
+| File & folder names | English (kebab-case) |
 
 ---
 
-## 📁 Estructura de Carpetas
-
-```
-spendwise-ai/
-├── .bmad/                    # 🤖 Agentes BMAD
-│   ├── analyst.md            # Penny
-│   ├── architect.md          # Archi
-│   └── coder.md              # Cody
-│
-├── app/                      # 📱 Next.js App Router
-│   ├── layout.tsx
-│   ├── page.tsx
-│   └── globals.css
-│
-├── src/
-│   ├── components/           # 🧩 Atomic Design
-│   │   ├── atoms/
-│   │   ├── molecules/
-│   │   ├── organisms/
-│   │   ├── templates/
-│   │   └── providers/
-│   │
-│   ├── services/             # 🔧 Lógica de negocio
-│   ├── stores/               # 🗄️ Estado (Zustand)
-│   ├── types/                # 📝 TypeScript
-│   ├── config/               # ⚙️ Configuración
-│   └── lib/                  # 📚 Utilidades
-│
-└── public/                   # 📁 Assets estáticos
-```
-
----
-
-## 💡 Ejemplos de Uso
-
-### Registrar gastos en español
-
-```
-"Gasté 150.000 en el super"           → 🍔 Alimentación | $150.000 COP
-"Uber al trabajo 12.500"              → 🚗 Transporte   | $12.500 COP
-"Netflix mensual 15 dólares"          → 🎬 Entretenimiento | $15 USD
-"Pagué la luz 85.000"                 → 🏠 Hogar | $85.000 COP
-"Peluquería 40000"                    → 💅 Cuidado Personal | $40.000 COP
-"Le envié 200 USD a mi mamá"          → 👨‍👩‍👧 Familia | $200 USD
-```
-
-### Monedas soportadas
-
-| Moneda | Símbolos reconocidos | Formato |
-|--------|---------------------|---------|
-| 🇨🇴 COP | peso, pesos, cop | 150.000 |
-| 🇺🇸 USD | dólar, dólares, usd, dollar | 150.00 |
-
-**Tipo de cambio:** 1 USD = 3.700 COP
-
----
-
-## 📜 Licencia
+## 📜 License
 
 MIT © 2026 SpendWise AI
 
@@ -360,8 +238,8 @@ MIT © 2026 SpendWise AI
 
 <div align="center">
 
-**Construido con 💚 usando el BMAD-METHOD™**
+**Built with 💚 using the BMAD-METHOD™ v6**
 
-*¿Preguntas? Abre un issue o consulta a los agentes en `/.bmad/`*
+*Questions? Consult the agents in `.bmad-core/agents/` or open an issue.*
 
 </div>
